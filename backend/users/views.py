@@ -1,5 +1,5 @@
-from backend.api.pagination import CustomPagination
-from backend.api.serializers import CustomUserSerializer, SubscribeSerializer
+from api.pagination import CustomPagination
+from api.serializers import CustomUserSerializer, SubscribeSerializer
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet

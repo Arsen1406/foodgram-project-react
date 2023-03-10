@@ -10,8 +10,8 @@ from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
-from backend.recipes.models import Ingredient, Tag, Recipe, IngredientInRecipe
-from backend.users.models import Subscribe
+from recipes.models import Ingredient, Tag, Recipe, IngredientInRecipe
+from users.models import Subscribe
 
 User = get_user_model()
 

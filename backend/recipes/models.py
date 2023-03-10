@@ -56,35 +56,39 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    name = models.CharField('Название', max_length=200)
     author = models.ForeignKey(
         User,
         related_name='recipes',
-        on_delete=models.SET_NULL,
-        verbose_name='Автор'
+        on_delete=models.SET_NULL,  # SET NULL?
+        null=True,
+        verbose_name='Автор',
     )
-    name = models.CharField(
-        max_length=225,
-        verbose_name='Название'
+    text = models.TextField('Описание')
+    image = models.ImageField(
+        'Изображение',
+        upload_to='recipes/'
     )
-    page = models.FileField(upload_to='/page-recipe', blank=True)
-    description = models.TextField(blank=True)
+    cooking_time = models.PositiveSmallIntegerField(
+        'Время приготовления',
+        validators=[MinValueValidator(1, message='Минимальное значение 1!')]
+    )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='IngredientInRecipe'
+        through='IngredientInRecipe',
+        related_name='recipes',
+        verbose_name='Ингредиенты'
     )
-    tag = models.ManyToManyField(
+    tags = models.ManyToManyField(
         Tag,
         related_name='recipes',
         verbose_name='Теги'
-    )
-    cooking_time = models.PositiveIntegerField(
-        'Время приготовления',
-        validators=[MinValueValidator(1, message='Минимальное значение 1!')]
     )
 
     class Meta:
         ordering = ['-id']
         verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
 
     def __str__(self):
         return self.name
