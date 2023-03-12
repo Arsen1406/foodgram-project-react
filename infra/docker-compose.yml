@@ -2,11 +2,22 @@ version: '3.8'
 
 services:
 
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - /var/lib/postgresql/data/
+    env_file:
+      - .env
+
   backend:
     build:
       context: ../backend
       dockerfile: Dockerfile
     restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
@@ -34,5 +45,6 @@ services:
       - backend
 
 volumes:
+  db_value:
   static_value:
   media_value:
