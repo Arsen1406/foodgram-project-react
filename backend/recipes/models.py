@@ -38,9 +38,6 @@ class Ingredient(models.Model):
         unique=True,
         verbose_name='Название'
     )
-    quantity = models.IntegerField(
-        verbose_name='Количество'
-    )
     units = models.CharField(
         max_length=255,
         verbose_name='Единицы измерения'
@@ -142,7 +139,7 @@ class IngredientInRecipe(models.Model):
 
     def __str__(self):
         return (
-            f'{self.ingredient.name} ({self.ingredient.measurement_unit})'
+            f'{self.ingredient.name} ({self.ingredient.units})'
             f' - {self.amount} '
         )
 
