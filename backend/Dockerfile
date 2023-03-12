@@ -11,4 +11,4 @@ COPY foodapp /app
 WORKDIR /app
 
 
-CMD ["gunicorn", "foodapp.wsgi:application", "--bind", "0:8000" ]
+CMD ["gunicorn", "foodapp.foodgram.wsgi:application", "--bind", "0:8000" ]
