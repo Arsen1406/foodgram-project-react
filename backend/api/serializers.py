@@ -19,10 +19,7 @@ User = get_user_model()
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta:
         model = User
-        fields = tuple(User.REQUIRED_FIELDS) + (
-            User.USERNAME_FIELD,
-            'password',
-        )
+        fields = tuple(User.REQUIRED_FIELDS)
 
 
 class CustomUserSerializer(UserSerializer):
@@ -120,14 +117,9 @@ class RecipeReadSerializer(ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-        recipe = obj
-        ingredients = recipe.ingredients.values(
-            'id',
-            'name',
-            'measurement_unit',
-            amount=F('ingredientinrecipe__amount')
-        )
-        return ingredients
+
+        queryset = IngredientInRecipe.objects.filter(recipe=obj)
+        return IngredientInRecipeWriteSerializer(queryset, many=True).data
 
     def get_is_favorited(self, obj):
         user = self.context.get('request').user
