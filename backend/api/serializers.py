@@ -10,13 +10,7 @@ from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
-from recipes.models import (
-    Ingredient,
-    Tag,
-    Recipe,
-    IngredientInRecipe,
-    Favourite
-)
+from recipes.models import Ingredient, Tag, Recipe, IngredientInRecipe
 from users.models import Subscribe
 
 User = get_user_model()
@@ -123,14 +117,15 @@ class RecipeReadSerializer(ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-        queryset = IngredientInRecipe.objects.filter(recipe=obj)
-        return IngredientInRecipeWriteSerializer(queryset, many=True).data
+        request = self.context.get('request')
+        context = {'request': request}
+        return Ingredient.objects.get(context=context).data
 
     def get_is_favorited(self, obj):
-        request = self.context.get('request')
-        if not request or request.user.is_anonymous:
+        user = self.context.get('request').user
+        if user.is_anonymous:
             return False
-        return Favourite.objects.filter(user=request.user, recipe=obj).exists()
+        return user.favorites.filter(recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
