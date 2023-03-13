@@ -6,13 +6,24 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import IntegerField, SerializerMethodField, \
-    ReadOnlyField
+from rest_framework.fields import (
+    IntegerField,
+    SerializerMethodField,
+    ReadOnlyField,
+)
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
-
-from recipes.models import Ingredient, Tag, Recipe, IngredientInRecipe
 from users.models import Subscribe
+from recipes.models import (
+    Ingredient,
+    Tag,
+    Recipe,
+    IngredientInRecipe,
+    Favorite,
+    ShoppingCart
+)
+
+
 
 User = get_user_model()
 
@@ -135,16 +146,17 @@ class RecipeReadSerializer(ModelSerializer):
         return IngredientRepresentationSerializer(queryset, many=True).data
 
     def get_is_favorited(self, obj):
-        user = self.context.get('request').user
-        if user.is_anonymous:
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
             return False
-        return user.favorites.filter(recipe=obj).exists()
+        return Favorite.objects.filter(user=request.user, recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
-        user = self.context.get('request').user
-        if user.is_anonymous:
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
             return False
-        return user.shopping_cart.filter(recipe=obj).exists()
+        return ShoppingCart.objects.filter(
+            user=request.user, recipe=obj).exists()
 
 
 class IngredientInRecipeWriteSerializer(ModelSerializer):
