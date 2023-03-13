@@ -4,15 +4,13 @@ from rest_framework import routers
 from .views import (
     IngredientViewSet,
     TagViewSet,
-    RecipeViewSet,
-    ShoppingViewSet
+    RecipeViewSet
 )
 
 app_name = 'api'
 
 router = routers.DefaultRouter()
 router.register(r'recipes', RecipeViewSet, basename='recipes')
-router.register(r'recipes/download_shopping_cart', ShoppingViewSet, basename='shopping')
 router.register(r'tags', TagViewSet, basename='tags')
 router.register(r'users', UserViewSet, basename='users')
 router.register(
