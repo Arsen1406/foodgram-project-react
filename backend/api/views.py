@@ -64,7 +64,7 @@ class RecipeViewSet(ModelViewSet):
         return RecipeWriteSerializer
 
 
-class FavoriteViewSet(RecipeViewSet):
+class FavoriteViewSet(ModelViewSet):
     queryset = Favourite.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
@@ -99,14 +99,6 @@ class FavoriteViewSet(RecipeViewSet):
         else:
             return self.delete_from(Favourite, request.user, pk)
 
-
-class ShoppingViewSet(FavoriteViewSet):
-    queryset = ShoppingCart.objects.all()
-    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
-    pagination_class = CustomPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = RecipeFilter
-
     @action(
         detail=True,
         methods=['post', 'delete'],
@@ -117,6 +109,14 @@ class ShoppingViewSet(FavoriteViewSet):
             return self.add_to(ShoppingCart, request.user, pk)
         else:
             return self.delete_from(ShoppingCart, request.user, pk)
+
+
+class ShoppingViewSet(ModelViewSet):
+    queryset = ShoppingCart.objects.all()
+    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
+    pagination_class = CustomPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = RecipeFilter
 
     @action(
         detail=False,
