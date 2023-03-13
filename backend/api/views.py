@@ -63,14 +63,6 @@ class RecipeViewSet(ModelViewSet):
             return RecipeReadSerializer
         return RecipeWriteSerializer
 
-
-class FavoriteViewSet(ModelViewSet):
-    queryset = Favourite.objects.all()
-    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
-    pagination_class = CustomPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = RecipeFilter
-
     def add_to(self, model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response({'errors': 'Рецепт уже добавлен!'},
@@ -88,6 +80,8 @@ class FavoriteViewSet(ModelViewSet):
         return Response({'errors': 'Рецепт уже удален!'},
                         status=status.HTTP_400_BAD_REQUEST)
 
+
+class FavoriteViewSet(RecipeViewSet):
     @action(
         detail=True,
         methods=['post', 'delete'],
@@ -100,13 +94,7 @@ class FavoriteViewSet(ModelViewSet):
             return self.delete_from(Favourite, request.user, pk)
 
 
-class ShoppingViewSet(FavoriteViewSet, ModelViewSet):
-    queryset = ShoppingCart.objects.all()
-    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
-    pagination_class = CustomPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = RecipeFilter
-
+class ShoppingViewSet(RecipeViewSet):
     @action(
         detail=True,
         methods=['post', 'delete'],
