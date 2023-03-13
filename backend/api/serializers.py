@@ -6,8 +6,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import IntegerField, SerializerMethodField, \
-    ReadOnlyField
+from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
@@ -16,8 +15,7 @@ from recipes.models import (
     Tag,
     Recipe,
     IngredientInRecipe,
-    Favourite,
-    ShoppingCart,
+    Favourite
 )
 from users.models import Subscribe
 
@@ -135,19 +133,14 @@ class RecipeReadSerializer(ModelSerializer):
         return Favourite.objects.filter(user=request.user, recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
-        request = self.context.get('request')
-        if not request or request.user.is_anonymous:
+        user = self.context.get('request').user
+        if user.is_anonymous:
             return False
-        return ShoppingCart.objects.filter(
-            user=request.user, recipe=obj
-        ).exists()
+        return user.shopping_cart.filter(recipe=obj).exists()
 
 
 class IngredientInRecipeWriteSerializer(ModelSerializer):
-    id = ReadOnlyField(source='ingredient.id')
-    name = ReadOnlyField(source='ingredient.name')
-    measurement_unit = ReadOnlyField(
-        source='ingredient.measurement_unit')
+    id = IntegerField(write_only=True)
 
     class Meta:
         model = IngredientInRecipe
