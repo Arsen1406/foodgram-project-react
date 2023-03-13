@@ -19,7 +19,7 @@ from recipes.models import (
     Tag,
     Recipe,
     IngredientInRecipe,
-    Favorite,
+    Favourite,
     ShoppingCart
 )
 
@@ -149,7 +149,7 @@ class RecipeReadSerializer(ModelSerializer):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:
             return False
-        return Favorite.objects.filter(user=request.user, recipe=obj).exists()
+        return Favourite.objects.filter(user=request.user, recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
