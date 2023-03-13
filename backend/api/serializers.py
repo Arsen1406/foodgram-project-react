@@ -117,7 +117,7 @@ class RecipeReadSerializer(ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-        ingredients = Ingredient.objects.get(recipe=obj.recipes)
+        ingredients = Ingredient.objects.select_related(obj.recipes.id).all()
         return ingredients
 
     def get_is_favorited(self, obj):
