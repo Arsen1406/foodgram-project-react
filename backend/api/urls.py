@@ -5,14 +5,14 @@ from .views import (
     IngredientViewSet,
     TagViewSet,
     RecipeViewSet,
-    CustomUserViewSet,
+    FavoriteViewSet,
 )
 
 app_name = 'api'
 
 router = routers.DefaultRouter()
 router.register(r'recipes', RecipeViewSet, basename='recipes')
-router.register(r'subscriptions', CustomUserViewSet, basename='subscriptions')
+router.register(r'subscriptions', FavoriteViewSet, basename='subscriptions')
 router.register(r'tags', TagViewSet, basename='tags')
 router.register(r'users', UserViewSet, basename='users')
 router.register(
