@@ -49,7 +49,7 @@ class TagViewSet(ReadOnlyModelViewSet):
 
 
 class FavoriteViewSet(ModelViewSet):
-    queryset = Recipe.objects.all()
+    queryset = Favourite.objects.all()
     serializer_class = SubscribeSerializer
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
