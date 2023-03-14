@@ -28,8 +28,7 @@ from .serializers import (
     RecipeReadSerializer,
     RecipeShortSerializer,
     RecipeWriteSerializer,
-    TagSerializer, CustomUserSerializer, SubscribeSerializer,
-    FavoriteSerializer
+    TagSerializer, CustomUserSerializer, SubscribeSerializer
 )
 from recipes.models import User
 from users.models import Subscribe
@@ -47,12 +46,6 @@ class TagViewSet(ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
-
-
-class FavoriteViewSet(ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = FavoriteSerializer
-    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
 
 
 class RecipeViewSet(ModelViewSet):

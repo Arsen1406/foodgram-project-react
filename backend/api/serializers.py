@@ -23,6 +23,8 @@ from recipes.models import (
     ShoppingCart
 )
 
+
+
 User = get_user_model()
 
 
@@ -51,17 +53,6 @@ class CustomUserSerializer(UserSerializer):
         if user.is_anonymous:
             return False
         return Subscribe.objects.filter(user=user, author=obj).exists()
-
-
-class FavoriteSerializer(ModelSerializer):
-    recipes_count = SerializerMethodField()
-    recipes = SerializerMethodField()
-
-    class Meta(CustomUserSerializer.Meta):
-        fields = CustomUserSerializer.Meta.fields + (
-            'recipes_count', 'recipes'
-        )
-        read_only_fields = ('email', 'username')
 
 
 class SubscribeSerializer(CustomUserSerializer):
