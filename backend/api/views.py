@@ -48,6 +48,15 @@ class TagViewSet(ReadOnlyModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
 
 
+class FavoriteViewSet(ModelViewSet):
+    queryset = Recipe.objects.all()
+    serializer_class = SubscribeSerializer
+    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
+    pagination_class = CustomPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = RecipeFilter
+
+
 class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)

@@ -23,8 +23,6 @@ from recipes.models import (
     ShoppingCart
 )
 
-
-
 User = get_user_model()
 
 
@@ -165,6 +163,31 @@ class IngredientInRecipeWriteSerializer(ModelSerializer):
     class Meta:
         model = IngredientInRecipe
         fields = ('id', 'amount')
+
+
+class FavoriteSerializer(ModelSerializer):
+    class Meta:
+        model = Recipe
+
+    def validate_ingredients(self, value):
+        ingredients = value
+        if not ingredients:
+            raise ValidationError({
+                'ingredients': 'Нужен хотя бы один ингредиент!'
+            })
+        ingredients_list = []
+        for item in ingredients:
+            ingredient = get_object_or_404(Ingredient, id=item['id'])
+            if ingredient in ingredients_list:
+                raise ValidationError({
+                    'ingredients': 'Ингридиенты не могут повторяться!'
+                })
+            if int(item['amount']) <= 0:
+                raise ValidationError({
+                    'amount': 'Количество ингредиента должно быть больше 0!'
+                })
+            ingredients_list.append(ingredient)
+        return value
 
 
 class RecipeWriteSerializer(ModelSerializer):
