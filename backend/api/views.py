@@ -28,7 +28,8 @@ from .serializers import (
     RecipeReadSerializer,
     RecipeShortSerializer,
     RecipeWriteSerializer,
-    TagSerializer, CustomUserSerializer, SubscribeSerializer
+    TagSerializer, CustomUserSerializer, SubscribeSerializer,
+    FavoriteSerializer
 )
 from recipes.models import User
 from users.models import Subscribe
@@ -48,13 +49,10 @@ class TagViewSet(ReadOnlyModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
 
 
-class FavoriteViewSet(ModelViewSet):
+class FavoritViewSet(ReadOnlyModelViewSet):
     queryset = Favourite.objects.all()
-    serializer_class = SubscribeSerializer
+    serializer_class = FavoriteSerializer
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
-    pagination_class = CustomPagination
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = RecipeFilter
 
 
 class RecipeViewSet(ModelViewSet):

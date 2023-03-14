@@ -23,8 +23,6 @@ from recipes.models import (
     ShoppingCart
 )
 
-
-
 User = get_user_model()
 
 
@@ -55,7 +53,7 @@ class CustomUserSerializer(UserSerializer):
         return Subscribe.objects.filter(user=user, author=obj).exists()
 
 
-class SubscribeSerializer(CustomUserSerializer):
+class FavoriteSerializer(ModelSerializer):
     recipes_count = SerializerMethodField()
     recipes = SerializerMethodField()
 
@@ -65,11 +63,16 @@ class SubscribeSerializer(CustomUserSerializer):
         )
         read_only_fields = ('email', 'username')
 
-    def get_is_favorited(self, obj):
-        request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        return Favourite.objects.filter(user=request.user, recipe=obj).exists()
+
+class SubscribeSerializer(CustomUserSerializer):
+    recipes_count = SerializerMethodField()
+    recipes = SerializerMethodField()
+
+    class Meta(CustomUserSerializer.Meta):
+        fields = CustomUserSerializer.Meta.fields + (
+            'recipes_count', 'recipes'
+        )
+        read_only_fields = ('email', 'username')
 
     def validate(self, data):
         author = self.instance
