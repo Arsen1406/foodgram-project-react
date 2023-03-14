@@ -49,7 +49,7 @@ class TagViewSet(ReadOnlyModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
 
 
-class FavoritViewSet(ReadOnlyModelViewSet):
+class FavoriteViewSet(ReadOnlyModelViewSet):
     queryset = Favourite.objects.all()
     serializer_class = FavoriteSerializer
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
