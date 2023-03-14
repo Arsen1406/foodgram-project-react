@@ -65,6 +65,12 @@ class SubscribeSerializer(CustomUserSerializer):
         )
         read_only_fields = ('email', 'username')
 
+    def get_is_favorited(self, obj):
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
+            return False
+        return Favourite.objects.filter(user=request.user, recipe=obj).exists()
+
     def validate(self, data):
         author = self.instance
         user = self.context.get('request').user
