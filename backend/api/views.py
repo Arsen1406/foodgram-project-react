@@ -82,7 +82,7 @@ class RecipeViewSet(ModelViewSet):
 
 
 class FavoriteViewSet(ModelViewSet):
-    queryset = Favourite.objects.all()
+    queryset = Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
@@ -127,7 +127,7 @@ class FavoriteViewSet(ModelViewSet):
 
 
 class ShoppingCartViewSet(ModelViewSet):
-    queryset = ShoppingCart.objects.all()
+    queryset = Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
