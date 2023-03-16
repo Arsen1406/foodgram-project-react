@@ -22,6 +22,8 @@ from recipes.models import (
     ShoppingCart
 )
 
+
+
 User = get_user_model()
 
 
