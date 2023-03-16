@@ -82,7 +82,7 @@ class RecipeViewSet(ModelViewSet):
 
 
 class FavoriteViewSet(ModelViewSet):
-    queryset = Favourite.objects.all().prefetch_related('ingredient_list')
+    queryset = Favourite.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
