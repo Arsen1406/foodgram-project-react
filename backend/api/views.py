@@ -49,7 +49,7 @@ class TagViewSet(ReadOnlyModelViewSet):
 
 
 class RecipeViewSet(ModelViewSet):
-    queryset = Recipe.objects.prefetch_related().all()
+    queryset = Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
@@ -82,7 +82,7 @@ class RecipeViewSet(ModelViewSet):
 
 
 class FavoriteViewSet(ModelViewSet):
-    queryset = Favourite.objects.all()
+    queryset = Favourite.objects.all().prefetch_related('ingredient_list')
     permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
