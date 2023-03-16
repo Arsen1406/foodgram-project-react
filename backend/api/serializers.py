@@ -141,8 +141,7 @@ class RecipeReadSerializer(ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-        queryset = IngredientInRecipe.objects.filter(recipe=obj)
-        return IngredientRepresentationSerializer(queryset, many=True).data
+        return IngredientRepresentationSerializer(source='ingredient_list', many=True)
 
     def get_is_favorited(self, obj):
         user = self.context.get('request').user
