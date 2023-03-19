@@ -37,9 +37,8 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2 
         with:
-          context: food_gram
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/food_gram:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/food_gram
 
   deploy:
     name: Deploy to remote server
@@ -54,7 +53,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/food_gram:latest
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/food_gram
           sudo docker-compose stop
           sudo docker-compose rm web
           touch .env
