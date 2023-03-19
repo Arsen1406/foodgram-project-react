@@ -22,8 +22,6 @@ from recipes.models import (
     ShoppingCart
 )
 
-
-
 User = get_user_model()
 
 
@@ -120,7 +118,10 @@ class IngredientRepresentationSerializer(ModelSerializer):
 class RecipeReadSerializer(ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
-    ingredients = SerializerMethodField()
+    ingredients = IngredientRepresentationSerializer(
+        many=True,
+        sorce='ingredient_list'
+    )
     image = Base64ImageField()
     is_favorited = SerializerMethodField(read_only=True)
     is_in_shopping_cart = SerializerMethodField(read_only=True)
@@ -138,12 +139,6 @@ class RecipeReadSerializer(ModelSerializer):
             'image',
             'text',
             'cooking_time',
-        )
-
-    def get_ingredients(self, obj):
-        return IngredientRepresentationSerializer(
-            source='ingredient_list',
-            many=True
         )
 
     def get_is_favorited(self, obj):
