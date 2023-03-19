@@ -22,7 +22,6 @@ jobs:
       name: Push Docker image to Docker Hub
       runs-on: ubuntu-latest
       needs: tests
-      if: github.ref_name == 'master'
       steps:
         - name: Check out the repo
           uses: actions/checkout@v3
@@ -65,7 +64,7 @@ jobs:
         script: |
           sudo docker-compose stop
           sudo docker-compose rm -f backend frontend
-          sudo docker image rm ${{ secrets.DOCKER_USERNAME }}/foodgram_backend ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
+          sudo docker image rm foodgram_backend foodgram_frontend
           sudo docker-compose pull backend frontend
           touch .env
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
