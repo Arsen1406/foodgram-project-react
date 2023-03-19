@@ -118,7 +118,7 @@ class IngredientRepresentationSerializer(ModelSerializer):
 class RecipeReadSerializer(ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
-    ingredients = IngredientRepresentationSerializer(
+    ingredients = IngredientSerializer(
         many=True,
         sorce='ingredient_list'
     )
