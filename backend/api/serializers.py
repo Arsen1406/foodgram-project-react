@@ -102,19 +102,6 @@ class TagSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class IngredientRepresentationSerializer(ModelSerializer):
-    """Общий вывод ингредиентов по Get запросу."""
-
-    id = ReadOnlyField(source='ingredient.id')
-    name = ReadOnlyField(source='ingredient.name')
-    measurement_unit = ReadOnlyField(
-        source='ingredient.measurement_unit')
-
-    class Meta:
-        fields = '__all__'
-        model = IngredientInRecipe
-
-
 class RecipeReadSerializer(ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
