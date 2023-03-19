@@ -119,8 +119,7 @@ class RecipeReadSerializer(ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
     ingredients = IngredientSerializer(
-        many=True,
-        sorce='ingredient_list'
+        many=True
     )
     image = Base64ImageField()
     is_favorited = SerializerMethodField(read_only=True)
