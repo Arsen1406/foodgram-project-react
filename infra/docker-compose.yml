@@ -8,6 +8,7 @@ services:
     env_file:
       - .env
   backend:
+    image: arsen1406/food_gram:latest
     build:
       context: ../backend
       dockerfile: Dockerfile
