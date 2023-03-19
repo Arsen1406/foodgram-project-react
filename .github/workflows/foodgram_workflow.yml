@@ -39,7 +39,7 @@ jobs:
         with:
           context: food_gram
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/food_gram
+          tags: ${{ secrets.DOCKER_USERNAME }}/food_gram:latest
 
   deploy:
     name: Deploy to remote server
@@ -54,7 +54,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/food_gram
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/food_gram:latest
           sudo docker-compose stop
           sudo docker-compose rm web
           touch .env
