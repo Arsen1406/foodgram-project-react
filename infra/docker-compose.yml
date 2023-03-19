@@ -5,7 +5,7 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - .env
 
   backend:
     image: arsen1406/foodgram_backend
